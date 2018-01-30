@@ -2,8 +2,12 @@ package util
 
 import (
 	"fmt"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"strings"
+
+	"github.com/pkg/errors"
 )
 
 // Command represents a command, its subcommands and arguments
@@ -40,14 +44,36 @@ func (c *Command) AddEnvs(envs ...string) *Command {
 	return c
 }
 
+//
+func getGitVersion() string {
+	cmd := NewGitCommand("version")
+	v, _ := exec.Command(cmd.name, cmd.args...).Output()
+	return strings.TrimSpace(string(v))
+}
+
 // IsGitInstalled returns true if git tool has been installed
 func IsGitInstalled() bool {
-	cmd := NewGitCommand("version")
-	ver, err := exec.Command(cmd.name, cmd.args...).Output()
-	if err != nil {
-		return false
+	if ver := getGitVersion(); ver != "" {
+		fmt.Printf("... %s is installed\n", ver)
+		return true
 	}
-	fmt.Printf("%s is installed\n", strings.TrimSpace(string(ver)))
+	return false
+}
 
-	return true
+// RunInDir executes command in specified directory
+func (c *Command) RunInDir(path string) ([]byte, error) {
+	pwd, _ := filepath.Abs(".")
+
+	if err := os.Chdir(path); err != nil {
+		msg := fmt.Sprintf("could not move into %s", path)
+		return nil, errors.Wrap(err, msg)
+	}
+	out, _ := exec.Command(c.name, c.args...).Output()
+
+	if err := os.Chdir(pwd); err != nil {
+		msg := fmt.Sprintf("could not move back to %s", pwd)
+		return nil, errors.Wrap(err, msg)
+	}
+
+	return out, nil
 }
