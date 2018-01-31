@@ -55,3 +55,22 @@ func TestRunInDir(t *testing.T) {
 		}
 	}
 }
+
+var updateRepoTests = []struct {
+	name string
+	path string
+}{
+	{
+		name: "should not return any errors while executing command",
+		path: "../cmd/test/.gitbucket/repositories/toversus/backet.git",
+	},
+}
+
+func TestUpdateRepositoryInDir(t *testing.T) {
+	for _, testcase := range updateRepoTests {
+		t.Log(testcase.name)
+		if err := UpdateRepositoryInDir(testcase.path); err != nil {
+			t.Error(err)
+		}
+	}
+}

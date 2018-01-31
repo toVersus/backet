@@ -77,3 +77,24 @@ func (c *Command) RunInDir(path string) ([]byte, error) {
 
 	return out, nil
 }
+
+// GitCloneWithMirrorOpt clones repository into dest directory with mirror option
+func GitCloneWithMirrorOpt(src string, dest string) error {
+	cmd := NewGitCommand("clone", "--mirror", src, dest)
+	out, err := exec.Command(cmd.name, cmd.args...).Output()
+	if err != nil {
+		return errors.Wrap(err, "could not clone git repository")
+	}
+	fmt.Printf("  %s\n", out)
+	return nil
+}
+
+// UpdateRepositoryInDir pulls changes from remote repository in path directory
+// and goes back to current directory
+func UpdateRepositoryInDir(path string) error {
+	cmd := NewGitCommand("remote", "update")
+	if _, err := cmd.RunInDir(path); err != nil {
+		return errors.Wrap(err, "could not update repository")
+	}
+	return nil
+}

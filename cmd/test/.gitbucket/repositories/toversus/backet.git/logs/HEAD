@@ -1,0 +1,3 @@
+0000000000000000000000000000000000000000 71c9010564d0079e0aa6d339c87fd2816ded6002 toversus <toversus26@gmail.com> 1517144841 +0900	commit (initial): first commit
+71c9010564d0079e0aa6d339c87fd2816ded6002 baf64b8651bc9cfdca311927bfa7a1bb4cfd0b26 toversus <toversus26@gmail.com> 1517232171 +0900	commit: add command structure to execute git command
+baf64b8651bc9cfdca311927bfa7a1bb4cfd0b26 13e41fba085604276ab969b2d1c6c6826d77bb92 toversus <toversus26@gmail.com> 1517316811 +0900	commit: add some useful functions and testcases for them
