@@ -71,3 +71,17 @@ func createMirrorRepository(src string, dest string) error {
 	}
 	return nil
 }
+
+func getToRepositories(path string) string {
+	return filepath.Join(path, "repositories")
+}
+
+func getToProjects(path string) ([]string, error) {
+	toRepositories := getToRepositories(path)
+	stringPattern := filepath.Join(toRepositories, "*/*.git")
+	toProjects, err := filepath.Glob(stringPattern)
+	if err != nil {
+		return nil, errors.Wrap(err, "could not find any projects\n")
+	}
+	return toProjects, nil
+}
