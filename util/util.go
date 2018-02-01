@@ -24,7 +24,8 @@ func IsExist(path string) bool {
 func CreateDir(path string) error {
 	fmt.Printf("Creating new directory: %s\n", path)
 	if err := os.MkdirAll(path, 0666); err != nil {
-		return errors.Wrap(err, "could not create a new directory")
+		msg := fmt.Sprintf("could not create a new directory: %s\n", path)
+		return errors.Wrap(err, msg)
 	}
 	return nil
 }
@@ -47,7 +48,7 @@ func GetParentDirName(path string) string {
 func DeleteDir(path string) error {
 	fmt.Printf("Deleting directory: %s\n", path)
 	if err := os.RemoveAll(path); err != nil {
-		return errors.Wrap(err, "could not delete directory")
+		return errors.Wrap(err, "could not delete directory\n")
 	}
 	return nil
 }

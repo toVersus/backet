@@ -65,13 +65,13 @@ func (c *Command) RunInDir(path string) ([]byte, error) {
 	pwd, _ := filepath.Abs(".")
 
 	if err := os.Chdir(path); err != nil {
-		msg := fmt.Sprintf("could not move into %s", path)
+		msg := fmt.Sprintf("could not move into %s\n", path)
 		return nil, errors.Wrap(err, msg)
 	}
 	out, _ := exec.Command(c.name, c.args...).Output()
 
 	if err := os.Chdir(pwd); err != nil {
-		msg := fmt.Sprintf("could not move back to %s", pwd)
+		msg := fmt.Sprintf("could not move back to %s\n", pwd)
 		return nil, errors.Wrap(err, msg)
 	}
 
@@ -83,7 +83,7 @@ func GitCloneWithMirrorOpt(src string, dest string) error {
 	cmd := NewGitCommand("clone", "--mirror", src, dest)
 	out, err := exec.Command(cmd.name, cmd.args...).Output()
 	if err != nil {
-		return errors.Wrap(err, "could not clone git repository")
+		return errors.Wrap(err, "could not clone git repository\n")
 	}
 	fmt.Printf("  %s\n", out)
 	return nil
@@ -94,7 +94,7 @@ func GitCloneWithMirrorOpt(src string, dest string) error {
 func UpdateRepositoryInDir(path string) error {
 	cmd := NewGitCommand("remote", "update")
 	if _, err := cmd.RunInDir(path); err != nil {
-		return errors.Wrap(err, "could not update repository")
+		return errors.Wrap(err, "could not update repository\n")
 	}
 	return nil
 }

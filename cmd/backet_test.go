@@ -23,7 +23,7 @@ var gitCloneTests = []struct {
 func TestCreateMirrorRepository(t *testing.T) {
 	for _, testcase := range gitCloneTests {
 		t.Log(testcase.name)
-		if testcase.srcIsExists == true {
+		if testcase.srcIsExists == false {
 			_ = util.CreateDir(testcase.src)
 		}
 		if err := createMirrorRepository(testcase.src, testcase.dest); err != nil {

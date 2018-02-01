@@ -55,7 +55,6 @@ func doBackup(cmd *cobra.Command, args []string) error {
 		util.ErrorExit(msg)
 	}
 	fmt.Printf("Cloning all repositories...\n")
-
 	return nil
 }
 
@@ -67,7 +66,7 @@ func createMirrorRepository(src string, dest string) error {
 	} else {
 		fmt.Printf("  cloning %s into %s\n", src, dest)
 		if err := util.GitCloneWithMirrorOpt(src, dest); err != nil {
-			return errors.Wrap(err, "could not create a repository into a new directory")
+			return errors.Wrap(err, "could not create a repository into a new directory\n")
 		}
 	}
 	return nil
