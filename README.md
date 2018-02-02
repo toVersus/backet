@@ -6,13 +6,12 @@
 
 Backet provides the following features for backup:
 
-- [ ] repositories and related wiki pages
+- [x] repositories and related wiki pages
 - [ ] database containing users, groups and associated issues
 
 ## Usage
 Backup all repositories and related wiki pages
-- src argument can be ignored when GITBUCKET_HOME is set as environment variable
 
 ```
-$ backet backup repo [-s <path/to/GITBUCKET_HOME>] -d <path/to/backup/dir>
+$ backet backup -s <path/to/GITBUCKET_HOME> -d <path/to/backup/dir>
 ```

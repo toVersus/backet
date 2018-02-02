@@ -5,6 +5,8 @@ import (
 	"reflect"
 	"testing"
 
+	"github.com/spf13/cobra"
+
 	"github.com/toversus/backet/util"
 )
 
@@ -61,6 +63,36 @@ func TestGetToProject(t *testing.T) {
 		}
 		if !reflect.DeepEqual(toProjects, testcase.expect) {
 			t.Errorf("=> Got %#v,\n => expected %#v", toProjects, testcase.expect)
+		}
+	}
+}
+
+var doBackupTests = []struct {
+	name string
+	src  string
+	dest string
+	cmd  *cobra.Command
+	args []string
+}{
+	{
+		name: "should get git repositories for each user",
+		src:  "test/.gitbucket",
+		dest: "test/backup",
+		cmd:  &cobra.Command{},
+		args: []string{},
+	},
+}
+
+func TestDoBackup(t *testing.T) {
+	for _, testcase := range doBackupTests {
+		srcDir = testcase.src
+		destDir = testcase.dest
+		if err := doBackup(testcase.cmd, testcase.args); err != nil {
+			t.Errorf("%s\n", err)
+		}
+
+		if err := util.DeleteDir(testcase.dest); err != nil {
+			t.Errorf("%s\n", err)
 		}
 	}
 }

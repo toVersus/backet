@@ -3,6 +3,7 @@ package cmd
 import (
 	"fmt"
 	"path/filepath"
+	"unicode/utf8"
 
 	"github.com/pkg/errors"
 	"github.com/spf13/cobra"
@@ -54,7 +55,28 @@ func doBackup(cmd *cobra.Command, args []string) error {
 		msg := fmt.Sprintf("%#v", err)
 		util.ErrorExit(msg)
 	}
+
+	srcRepositories := getToRepositories(srcDir)
+	destRepositories := getToRepositories(destDir)
+	srcProjects, err := getToProjects(srcDir)
+	if err != nil {
+		msg := fmt.Sprintf("%s", err)
+		util.ErrorExit(msg)
+	}
+
 	fmt.Printf("Cloning all repositories...\n")
+	for _, srcProject := range srcProjects {
+		destProject := filepath.Join(destRepositories, srcProject[utf8.RuneCountInString(srcRepositories):])
+		if err := createMirrorRepository(srcProject, destProject); err != nil {
+			msg := fmt.Sprintf("%s", err)
+			util.ErrorExit(msg)
+		}
+
+		if err := util.UpdateRepositoryInDir(destProject); err != nil {
+			msg := fmt.Sprintf("%s", err)
+			util.ErrorExit(msg)
+		}
+	}
 	return nil
 }
 
