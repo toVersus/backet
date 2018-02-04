@@ -93,8 +93,10 @@ func GitCloneWithMirrorOpt(src string, dest string) error {
 // and goes back to current directory
 func UpdateRepositoryInDir(path string) error {
 	cmd := NewGitCommand("remote", "update")
-	if _, err := cmd.RunInDir(path); err != nil {
+	out, err := cmd.RunInDir(path)
+	if err != nil {
 		return errors.Wrap(err, "could not update repository\n")
 	}
+	fmt.Printf("  %s\n", out)
 	return nil
 }
