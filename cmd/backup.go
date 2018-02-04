@@ -2,7 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 	"path/filepath"
+	"runtime"
 	"unicode/utf8"
 
 	"github.com/pkg/errors"
@@ -106,4 +108,11 @@ func getToProjects(path string) ([]string, error) {
 		return nil, errors.Wrap(err, "could not find any projects\n")
 	}
 	return toProjects, nil
+}
+
+func getHomeDir() string {
+	if runtime.GOOS == "windows" {
+		return os.Getenv("USERPROFILE")
+	}
+	return os.Getenv("HOME")
 }
